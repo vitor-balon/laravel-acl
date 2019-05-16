@@ -11,12 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'SiteController@index')->name('home');
+
+Route::get('/home', 'PanelController@index')->name('home');
 
 Route::get('notice/{id}/update', ['uses' => 'HomeController@update', 'as' => 'notice.update']);
+
+Route::get('/roles/permissions', ['uses' => 'HomeController@rolesPermissions', 'as' => 'notice.role.permissions']);

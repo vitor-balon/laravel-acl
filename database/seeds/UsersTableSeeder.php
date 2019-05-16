@@ -15,7 +15,8 @@ class UsersTableSeeder extends Seeder
     {
         $datas = [
             1 => ['name' => 'Administrador', 'email' => 'admin@admin.com', 'password' => bcrypt(123456789)],
-            2 => ['name' => 'Contato', 'email' => 'contato@contato.com', 'password' => bcrypt(123456789)]
+            2 => ['name' => 'Contato', 'email' => 'contato@contato.com', 'password' => bcrypt(123456789)],
+            3 => ['name' => 'Super Admin', 'email' => 'super@admin.com', 'password' => bcrypt(123456789)]
         ];
 
         foreach($datas as $item)

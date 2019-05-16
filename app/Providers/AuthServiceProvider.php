@@ -5,6 +5,10 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
+use App\User;
+use App\Permission;
+use App\Role;
+
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+        // App\Notice::class => App\Policies\NoticePolicy::class,
     ];
 
     /**
@@ -25,9 +29,24 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('update-notice', function ($user, $notice)
+        $permissions = Permission::with('roles')->get();
+
+        // dd($permissions);
+
+        foreach($permissions as $key => $value)
         {
-            return $user->id == $notice->user_id;
+            Gate::define($value->name, function ($user, $post) use ($value)
+            {
+                return $user->hasPermission($value);
+            });           
+        }
+
+        Gate::before(function($user, $ability)
+        {
+            if($user->hasAnyRoles('Admin'))
+            {
+                return true;
+            }
         });
     }
 }
